@@ -32,8 +32,17 @@ const commonEntryFiles = {
     popup: path.resolve(__dirname, 'src/popup/popup-init.ts'),
     insights: [path.resolve(__dirname, 'src/views/insights/initializer.ts')],
     detailsView: [path.resolve(__dirname, 'src/DetailsView/details-view-initializer.ts')],
-    devtools: [path.resolve(__dirname, 'src/Devtools/dev-tool-init.ts')],
     background: [path.resolve(__dirname, 'src/background/background-init.ts')],
+};
+
+const prodEntryFiles = {
+    ...commonEntryFiles,
+    devtools: [path.resolve(__dirname, 'src/Devtools/initialize-prod.ts')],
+};
+
+const devEntryFiles = {
+    ...commonEntryFiles,
+    devtools: [path.resolve(__dirname, 'src/Devtools/initialize-dev.ts')],
     debugTools: path.resolve(__dirname, 'src/debug-tools/debug-tools-init.tsx'),
 };
 
@@ -43,7 +52,6 @@ const electronEntryFiles = {
 };
 
 const commonConfig = {
-    entry: commonEntryFiles,
     module: {
         rules: [
             {
@@ -115,6 +123,7 @@ const unifiedConfig = {
 
 const devConfig = {
     ...commonConfig,
+    entry: devEntryFiles,
     name: 'dev',
     mode: 'development',
     devtool: 'eval-source-map',
@@ -129,6 +138,7 @@ const devConfig = {
 
 const prodConfig = {
     ...commonConfig,
+    entry: prodEntryFiles,
     name: 'prod',
     mode: 'production',
     devtool: false,
