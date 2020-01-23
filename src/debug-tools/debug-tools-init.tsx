@@ -11,7 +11,9 @@ import { StoreActionMessageCreatorFactory } from 'common/message-creators/store-
 import { StoreProxy } from 'common/store-proxy';
 import { StoreNames } from 'common/stores/store-names';
 import { FeatureFlagStoreData } from 'common/types/store-data/feature-flag-store-data';
+import { PermissionsStateStoreData } from 'common/types/store-data/permissions-state-store-data';
 import { ScopingStoreData } from 'common/types/store-data/scoping-store-data';
+import { UserConfigurationStoreData } from 'common/types/store-data/user-configuration-store';
 import { forEach, isEmpty } from 'lodash';
 import { DetailsRow, FocusZone, GroupedList, IColumn, Selection, SelectionMode, SelectionZone, Spinner } from 'office-ui-fabric-react';
 import * as React from 'react';
@@ -35,8 +37,13 @@ export const initializeDebugTools = () => {
 const createStoreProxies = (browserAdapter: BrowserAdapter) => {
     const featureFlagStore = new StoreProxy<FeatureFlagStoreData>(StoreNames[StoreNames.FeatureFlagStore], browserAdapter);
     const scopingStore = new StoreProxy<ScopingStoreData>(StoreNames[StoreNames.ScopingPanelStateStore], browserAdapter);
+    const userConfigurationStore = new StoreProxy<UserConfigurationStoreData>(
+        StoreNames[StoreNames.UserConfigurationStore],
+        browserAdapter,
+    );
+    const permissionsStore = new StoreProxy<PermissionsStateStoreData>(StoreNames[StoreNames.PermissionsStateStore], browserAdapter);
 
-    return [featureFlagStore, scopingStore];
+    return [featureFlagStore, scopingStore, userConfigurationStore, permissionsStore];
 };
 
 const getStoreActionMessageCreator = (browserAdapter: BrowserAdapter, stores: BaseStore<any>[]) => {
