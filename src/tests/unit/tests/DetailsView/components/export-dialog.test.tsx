@@ -86,7 +86,7 @@ describe('ExportDialog', () => {
             fileProviderMock
                 .setup(provider => provider.provideURL(It.isAny(), It.isAnyString()))
                 .returns(() => 'fake-url')
-                .verifiable(Times.once());
+                .verifiable(Times.exactly(2));
             onExportClickMock.setup(getter => getter()).verifiable(Times.once());
 
             detailsViewActionMessageCreatorMock
