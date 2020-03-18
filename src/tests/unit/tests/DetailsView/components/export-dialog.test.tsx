@@ -11,6 +11,8 @@ import { It, Mock, MockBehavior, Times } from 'typemoq';
 import { FileURLProvider } from '../../../../../common/file-url-provider';
 import { DetailsViewActionMessageCreator } from '../../../../../DetailsView/actions/details-view-action-message-creator';
 import { ExportDialog, ExportDialogProps } from '../../../../../DetailsView/components/export-dialog';
+import { FeatureFlags } from 'common/feature-flags';
+import { FlaggedComponent } from 'common/components/flagged-component';
 
 describe('ExportDialog', () => {
     const onCloseMock = Mock.ofInstance(() => {});
@@ -46,6 +48,7 @@ describe('ExportDialog', () => {
             onDescriptionChange: onDescriptionChangeMock.object,
             exportResultsType: 'Assessment',
             onExportClick: onExportClickMock.object,
+            featureFlagStoreData: {}, // TODO change this
         };
     });
 
@@ -69,6 +72,7 @@ describe('ExportDialog', () => {
             fileProviderMock.verifyAll();
         });
     });
+
     describe('user interaction', () => {
         it('closes the dialog onDismiss', () => {
             onCloseMock.setup(oc => oc()).verifiable(Times.once());
@@ -115,7 +119,12 @@ describe('ExportDialog', () => {
 
             const wrapper = shallow(<ExportDialog {...props} />);
 
-            wrapper.find(PrimaryButton).simulate('click', eventStub);
+            const flaggedComponent = wrapper.find(FlaggedComponent);
+
+            flaggedComponent
+                .dive()
+                .find(PrimaryButton)
+                .simulate('click', eventStub);
 
             reportExportServiceProvider.verifyAll();
             fileProviderMock.verifyAll();
